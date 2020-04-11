@@ -882,6 +882,8 @@ private:
     // matching ownerUid
     void traverseLayersInLayerStack(ui::LayerStack, const int32_t uid, const LayerVector::Visitor&);
 
+    bool canAllocateHwcDisplayIdForVDS(uint64_t usage);
+
     void readPersistentProperties();
 
     uint32_t getMaxAcquiredBufferCountForCurrentRefreshRate(uid_t uid) const;
@@ -1075,7 +1077,8 @@ private:
     void enableHalVirtualDisplays(bool);
 
     // Virtual display lifecycle for ID generation and HAL allocation.
-    VirtualDisplayId acquireVirtualDisplay(ui::Size, ui::PixelFormat) REQUIRES(mStateLock);
+    VirtualDisplayId acquireVirtualDisplay(ui::Size, ui::PixelFormat, bool canAllocateHwcForVDS)
+            REQUIRES(mStateLock);
     void releaseVirtualDisplay(VirtualDisplayId);
 
     void onActiveDisplayChangedLocked(const sp<DisplayDevice>& activeDisplay) REQUIRES(mStateLock);
