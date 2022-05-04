@@ -344,6 +344,10 @@ public:
     // layer refresh rate.
     static int getFrameRateDivider(Fps displayFrameRate, Fps layerFrameRate);
 
+    // Returns if the provided frame rates have a ratio t*1000/1001 or t*1001/1000
+    // for an integer t.
+    static bool isFractionalPairOrMultiple(Fps, Fps);
+
     using UidToFrameRateOverride = std::map<uid_t, Fps>;
     // Returns the frame rate override for each uid.
     //
@@ -449,6 +453,9 @@ private:
     void updateDisplayModes(const DisplayModes& mode, DisplayModeId currentModeId) EXCLUDES(mLock);
 
     void initializeIdleTimer();
+
+    float calculateNonExactMatchingLayerScoreLocked(const LayerRequirement&,
+                                                    const RefreshRate&) const REQUIRES(mLock);
 
     // The list of refresh rates, indexed by display modes ID. This may change after this
     // object is initialized.
